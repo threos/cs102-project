@@ -3,8 +3,7 @@ package co.xreos.lms.controller;
 import co.xreos.lms.navigation.base.controller.AppController;
 import co.xreos.lms.navigation.navigator.Navigator;
 import co.xreos.lms.state.AuthState;
-import co.xreos.lms.type.user.Teacher;
-import co.xreos.lms.type.user.User;
+import co.xreos.lms.type.user.*;
 import co.xreos.lms.view.LoginView;
 
 import javax.swing.*;
@@ -27,7 +26,7 @@ public class LoginController extends AppController<LoginView> {
             String username = view.getUsernameField().getText();
             String password = new String(view.getPasswordField().getPassword());
             if(!validate(username, password)) return;
-            login(username, password);
+            login(username, password, (Role) view.getRoleComboBox().getSelectedItem());
         });
     }
 
@@ -42,14 +41,18 @@ public class LoginController extends AppController<LoginView> {
         return true;
     }
 
-    public void login(String username, String password) {
-        User user = AuthState.getInstance().login(username, password);
+    public void login(String username, String password, Role role) {
+        User user = AuthState.getInstance().login(username, password, role);
         if(user == null) {
             JOptionPane.showMessageDialog(view, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         if(user instanceof Teacher) {
             Navigator.getInstance().popAndPushNamed("/teacher");
+        } else if (user instanceof TA) {
+
+        } else if (user instanceof Student) {
+            Navigator.getInstance().popAndPushNamed("/student");
         }
     }
 }

@@ -16,7 +16,6 @@ public class TeacherView extends AppView {
     private JButton createCourseButton;
     private JButton deleteCourseButton;
     private JButton approveCourseRequestButton;
-
     private JButton createGradebookItemButton;
     private JButton gradeStudentsButton;
     private JButton makeAnnouncementButton;
@@ -29,8 +28,8 @@ public class TeacherView extends AppView {
 
     @Override
     public void activate() {
-        setVisible(true);
         setTitle("Teacher Dashboard - " + AuthState.getInstance().getCurrentUser().getName());
+        super.activate();
     }
 
     @Override
@@ -40,13 +39,22 @@ public class TeacherView extends AppView {
 
     @Override
     public void onCreate() {
-        setSize(300, 200);
-        setResizable(false);
+        setSize(300, 700);
+        setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         User user = AuthState.getInstance().getCurrentUser();
 
-        ArrayList<JButton> buttons = new ArrayList<>(createCourseButton, deleteCourseButton, approveCourseRequestButton, createGradebookItemButton, gradeStudentsButton, makeAnnouncementButton, viewCourseParticipantsButton);
+        ArrayList<JButton> buttons = new ArrayList<>(List.of(
+                createCourseButton = new JButton("Create Course"),
+                deleteCourseButton = new JButton("Delete Course"),
+                approveCourseRequestButton = new JButton("Approve Course Request"),
+                createGradebookItemButton = new JButton("Create Gradebook Item"),
+                gradeStudentsButton = new JButton("Grade Students"),
+                makeAnnouncementButton = new JButton("Make Announcement"),
+                viewCourseParticipantsButton = new JButton("View Course Participants"),
+                logoutButton = new JButton("Log out")
+        ));
 
         setLayout(new GridLayout(buttons.size(), 1, 10, 16));
 

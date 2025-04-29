@@ -8,6 +8,6 @@ import co.xreos.lms.view.LoginView;
 
 public class LoginRoute extends ViewControllerRoute<LoginView, LoginController> {
     public LoginRoute() {
-        super("/login", new LoginView(), LoginController::new);
+        super("/login", LoginView::new, LoginController::new);
     }
 }

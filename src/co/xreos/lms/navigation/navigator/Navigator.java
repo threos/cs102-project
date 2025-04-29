@@ -44,8 +44,18 @@ public class Navigator {
         routes.put(route.getId(), route);
     }
 
+    public void reset() {
+        for (IRoute route : stack) {
+            route.dispose();
+        }
+        stack.clear();
+    }
+
     public void push(IRoute route) {
+        System.out.println("Pushing route: " + route);
+        if(route == null) throw new IllegalArgumentException("Route cannot be null. If you are using pushNamed, make sure you use the correct route id.");
         if (!route.isTransient()) deactivateLast();
+        if(!stack.isEmpty() && stack.peek().isTransient()) pop();
         stack.push(route);
         activateLast();
     }
@@ -57,9 +67,13 @@ public class Navigator {
         if(!popped.isTransient()) activateLast();
     }
 
+    public void pushNamed(String id) {
+        push(routes.get(id));
+    }
+
     public void popAndPushNamed(String id) {
         pop();
-        push(routes.get(id));
+        pushNamed(id);
     }
 
     private void deactivateLast() {

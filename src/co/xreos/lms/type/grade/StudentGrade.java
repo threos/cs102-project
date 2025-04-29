@@ -29,4 +29,20 @@ public class StudentGrade implements SerializableSchemaModel {
     public List<String> toProperties() {
         return List.of(courseId, studentName, gradeType.toString(), String.valueOf(grade));
     }
+
+    public String getCourseId() {
+        return this.courseId;
+    }
+
+    public String getStudent() {
+        return this.studentName;
+    }
+
+    public GradebookItem.GradebookItemType getGradeType() {
+        return this.gradeType;
+    }
+
+    public double getGrade() {
+        return this.grade;
+    }
 }

@@ -24,6 +24,19 @@ public class GradebookItem implements SerializableSchemaModel {
         return List.of(courseId, type.toString());
     }
 
+    public String getCourseId() {
+        return this.courseId;
+    }
+
+    public GradebookItemType getType() {
+        return this.type;
+    }
+
+    @Override
+    public String toString() {
+        return type.toString();
+    }
+
     public enum GradebookItemType {
         MIDTERM,
         FINAL,

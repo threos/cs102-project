@@ -13,4 +13,9 @@ public abstract class AppView extends JFrame implements LifecycleObject {
     public void onDestroy() {
         dispose();
     }
+
+    @Override
+    public void activate() {
+        setVisible(true);
+    }
 }

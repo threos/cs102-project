@@ -6,21 +6,34 @@ import java.util.List;
 
 public class StudentCourseEnrollment implements SerializableSchemaModel {
     private String courseId;
-    private String studentId;
+    private String student;
 
-    public StudentCourseEnrollment(String courseId, String studentId) {
+    public StudentCourseEnrollment(String courseId, String student) {
         this.courseId = courseId;
-        this.studentId = studentId;
+        this.student = student;
     }
 
     public static StudentCourseEnrollment fromProperties(List<String> properties) {
         String courseId = properties.get(0);
-        String studentId = properties.get(1);
-        return new StudentCourseEnrollment(courseId, studentId);
+        String student = properties.get(1);
+        return new StudentCourseEnrollment(courseId, student);
     }
 
     @Override
     public List<String> toProperties() {
-        return List.of(courseId, studentId);
+        return List.of(courseId, student);
+    }
+
+    @Override
+    public String toString() {
+        return student + " -> " + courseId;
+    }
+
+    public String getCourseId() {
+        return this.courseId;
+    }
+
+    public String getStudent() {
+        return this.student;
     }
 }

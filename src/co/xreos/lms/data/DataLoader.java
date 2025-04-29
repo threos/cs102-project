@@ -1,6 +1,7 @@
 package co.xreos.lms.data;
 
 import co.xreos.lms.repository.CoreRepository;
+import co.xreos.lms.repository.IRepository;
 import co.xreos.lms.repository.UserRepository;
 import co.xreos.lms.storage.SimpleStorage;
 import co.xreos.lms.type.user.Student;
@@ -16,7 +17,7 @@ public class DataLoader {
     private static SimpleStorage storage = new SimpleStorage();
     private static LMSSerializer serializer = new LMSSerializer();
 
-    public static void loadAllData() throws IOException {
+    public static void loadAllData(IRepository<SerializableSchemaModel> repository) throws IOException {
         String raw = storage.load();
 
         if (raw == null) {
@@ -28,18 +29,14 @@ public class DataLoader {
             TA u1 = new TA("jane", Crypto.hash("123", salt1), salt1);
             Student u2 = new Student("john", Crypto.hash("123", salt2), salt2);
 
-            CoreRepository.getInstance().addAll(List.of(u0, u1, u2));
-            storage.save(serializer.serialize(CoreRepository.getInstance().getAll()));
+            repository.addAll(List.of(u0, u1, u2));
             return;
         }
 
-        CoreRepository.getInstance().addAll(serializer.deserialize(raw));
+        repository.addAll(serializer.deserialize(raw));
     }
 
     public static void reset() {
         storage.reset();
-    }
-
-    private static void loadDefaultData() {
     }
 }

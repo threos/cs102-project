@@ -2,7 +2,7 @@ package co.xreos.lms.state;
 
 import co.xreos.lms.repository.CoreRepository;
 import co.xreos.lms.repository.UserRepository;
-import co.xreos.lms.type.user.User;
+import co.xreos.lms.type.user.*;
 import co.xreos.lms.utils.Crypto;
 
 public class AuthState {
@@ -20,22 +20,34 @@ public class AuthState {
         return currentUser != null;
     }
 
-    public User login(String name, String password) {
+    public User login(String name, String password, Role role) {
         UserRepository userRepository = UserRepository.getInstance();
         userRepository.getAll().stream()
-                .filter(e -> e instanceof User)
+                .filter(e -> {
+                    switch (role) {
+                        case TEACHER:
+                            return e instanceof Teacher;
+                        case TA:
+                            return e instanceof TA;
+                        case STUDENT:
+                            return e instanceof Student;
+                        default:
+                            return false;
+                    }
+                })
                 .map(e -> (User) e)
                 .filter(e -> e.getName().equals(name))
                 .findFirst()
                 .filter(e -> e.getHash().equals(Crypto.hash(password, e.getSalt())))
                 .ifPresent(e -> currentUser = e);
-        userRepository.getAll().forEach(e -> {
-            System.out.println("User: " + ((User) e).getName() + " " + ((User) e).getHash() + " " + ((User) e).getSalt() + "<=> " + Crypto.hash(password, ((User) e).getSalt()));
-        });
         return currentUser;
     }
 
     public User getCurrentUser() {
         return currentUser;
+    }
+
+    public void logout() {
+        currentUser = null;
     }
 }

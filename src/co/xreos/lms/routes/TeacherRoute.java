@@ -8,6 +8,6 @@ import co.xreos.lms.view.TeacherView;
 
 public class TeacherRoute extends ViewControllerRoute<TeacherView, TeacherController> {
     public TeacherRoute() {
-        super("/teacher", new TeacherView(), TeacherController::new);
+        super("/teacher", TeacherView::new, TeacherController::new);
     }
 }
